@@ -13,18 +13,38 @@
 // console.log('options', options)
 // 使用第三方库 commander
 const { program } = require('commander');
+const prompts = require('prompts');
 program
-.version('1.0.0')
-.description('my cli tool');
+    .version('1.0.0')
+    .description('my cli tool');
 program
-.command("init [name]")
-.description("init project")
-.option('-m, --mode <mode>', '什么模式')
-.option('-p, --presets <presets>', '什么预设')
-.action((name, options)=>{
-    console.log('name', name);
-    console.log('options', options);
-})
+    .command("init [name]")
+    .description("init project")
+    .option('-m, --mode <mode>', '什么模式')
+    .option('-p, --presets <presets>', '什么预设')
+    .action(async (name, options) => {
+        console.log('name', name);
+        console.log('options', options);
+        /****
+         * 拿到参数后，可以交互式地询问用户一些问题
+         * 1. 询问用户，项目名称，input 输入
+         * 2. 询问用户，项目类型，选择题 select ，vue react
+         * * */
+        const projectName = await prompts({
+            type: 'text',
+            name: 'name',
+            message: '项目名称',
+        })
+        const projectTemplate = await prompts({
+            type: 'select',
+            name: 'template',
+            message: '项目类型',
+            choices: [
+                { title: 'vue', value: 'vue' },
+                { title: 'react', value: 'react' },
+            ],
+        })
+    })
 /***
  * 导出方法，在 bin 目录下的可执行文件中调用
  * ~/learn/myCli/packages/cli目录下
@@ -35,6 +55,6 @@ program
  * 再执行ls -al bin       查看权限 -rwxr-xr-x  1 alanmac  staff   72  9 17 22:27 alan
  * 再执行./bin/alan      成功
  * **/
-module.exports = function runCli(){
+module.exports = function runCli() {
     program.parse(process.argv);
 }
