@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "commander": "13.1.0",
-    "prompts": "2.4.2"
+    "prompts": "2.4.2",
+    "fs-extra": "11.3.0"
   }
 }

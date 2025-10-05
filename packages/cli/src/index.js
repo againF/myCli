@@ -14,6 +14,8 @@
 // 使用第三方库 commander
 const { program } = require('commander');
 const prompts = require('prompts');
+const path = require('node:path');
+const { copy } = require('fs-extra');
 program
     .version('1.0.0')
     .description('my cli tool');
@@ -44,6 +46,15 @@ program
                 { title: 'react', value: 'react' },
             ],
         })
+        console.log('projectName', projectName);
+        console.log('projectTemplate', projectTemplate);
+        // 拼接当前选择的模板文件路径
+        const templatePath = path.resolve(__dirname, `../template/template-${projectTemplate.template}`);
+        console.log('templatePath', templatePath);
+        // 将模板目录下的文件，拷贝到当前用户执行命令的目录下
+        await copy(templatePath, path.resolve(process.cwd(), projectName.name));
+        // 命令行执行./bin/alan init开始交互式询问
+        console.log('项目创建成功');
     })
 /***
  * 导出方法，在 bin 目录下的可执行文件中调用
