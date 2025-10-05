@@ -13,10 +13,18 @@
 // console.log('options', options)
 // 使用第三方库 commander
 const { program } = require('commander');
-// console.log('program打印', program);
 program
 .version('1.0.0')
 .description('my cli tool');
+program
+.command("init [name]")
+.description("init project")
+.option('-m, --mode <mode>', '什么模式')
+.option('-p, --presets <presets>', '什么预设')
+.action((name, options)=>{
+    console.log('name', name);
+    console.log('options', options);
+})
 /***
  * 导出方法，在 bin 目录下的可执行文件中调用
  * ~/learn/myCli/packages/cli目录下
